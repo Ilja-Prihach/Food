@@ -7,6 +7,8 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
           tabsParent = document.querySelector('.tabheader__items');
 
 
+
+    //ТАбы      
     // скрыаем все не нужные нам табы переборм ерез forEach и скрытие через инлайн стили
     function hideTabeContent () {
         tabsContent.forEach(item => {
@@ -47,4 +49,60 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
         }
     });
 
+    //Делаем таймер
+    // Алгоритм:
+    // Функция которая будет устанавливать таймер
+    // Функция определяющая разницу между временем
+    // Функция которая будет обнавлять таймер
+    const deadline = '2023-01-21'; // конечная дата таймера
+
+    function getTimeRemaining(endtime) { // функ опред разницу между дедлайном и текущ времени
+        const t = Date.parse(endtime) - Date.parse(new Date()), // получим кол-во миллесек до которого нам нужно считать
+              days = Math.floor(t / (1000 * 60 * 60 *24)),      // кол-во дней до дедлайна
+              hours = Math.floor((t /( 1000* 60 * 60)) % 24),  // кол-во часов
+              minutes = Math.floor((t / 1000 / 60) % 60),  
+              seconds = Math.floor((t / 1000) % 60);
+        return {  //переенные только внутри функции, возвращаем их наружу с помощью ретерн
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        };   
+    }
+
+    //функция которая будет в таймер подставлять ноль, если цифра <10
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
+            return `0${num}`;
+        } else {
+            return num;
+        }
+    }
+
+    //Пишем функцию которая будет устанавливать таймер на страницу
+    function setClock(selector, endtime) {
+        const timer = document.querySelector(selector),
+              days = timer.querySelector('#days'),
+              hours = timer.querySelector('#hours'),
+              minutes = timer.querySelector('#minutes'),
+              seconds = timer.querySelector('#seconds'),
+              timeInterval = setInterval(updateClock, 1000);
+
+        updateClock();  // убираем баг мигания таймера      
+
+        function updateClock() {
+            const t = getTimeRemaining(endtime);
+
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
+
+            if (t.total <= 0) {
+                clearInterval(timeInterval);
+            }
+        }     
+    }
+    setClock('.timer', deadline );
 });
