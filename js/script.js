@@ -119,7 +119,7 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
 
     //Модальное окно
     //Создаю переменные
-    const modalTrigger = document.querySelector('[data-modal]'),
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
           modal = document.querySelector('.modal'),
           modalCloseBtn = document.querySelector('[data-close]');
     
@@ -127,18 +127,39 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
     //Создаю две функции на открытие и закрытие модального окна  
     //на неcколько триггеров подвязать обработчики событий 
 
-    modalTrigger.addEventListener('click', () => {
-        // modal.classList.add('show');
-        // modal.classList.remove('hide');
-        modal.classList.toggle('show');
-        document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыто
+    //перебираем наши кнопки, чтобы навесить на них обработчик событий
+    modalTrigger.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modal.classList.add('show');
+            modal.classList.remove('hide');
+            // modal.classList.toggle('show');
+            document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыто
+        });
     });
 
-    modalCloseBtn.addEventListener('click', () => {
-        // modal.classList.add('hide');
-        // modal.classList.remove('show');
-        modal.classList.toggle('show');
+    //создаю функию closeModal, чтобы небыло повторения кода
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        // modal.classList.toggle('show');
         document.body.style.overflow = '';
+    }
+    
+
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    // функционал, чтобы скипнуть модал если мимо него 
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    //функционал, чтобы скипать модальное окно при нажати на esc
+    document.addEventListener('keydown', (e) => {
+        if (e.code === "Escape" && modal.classList.contains('show')) {
+            closeModal();
+        }
     });
 
 });
