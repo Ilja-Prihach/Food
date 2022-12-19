@@ -127,15 +127,20 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
     //Создаю две функции на открытие и закрытие модального окна  
     //на неcколько триггеров подвязать обработчики событий 
 
+    //создаю функцию openModal,чтобы не повторялся код
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        // modal.classList.toggle('show');
+        document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыt
+        clearInterval(modalTimerId);
+    }
+
     //перебираем наши кнопки, чтобы навесить на них обработчик событий
     modalTrigger.forEach(btn => {
-        btn.addEventListener('click', () => {
-            modal.classList.add('show');
-            modal.classList.remove('hide');
-            // modal.classList.toggle('show');
-            document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыто
-        });
+        btn.addEventListener('click', openModal);
     });
+
 
     //создаю функию closeModal, чтобы небыло повторения кода
     function closeModal() {
@@ -161,5 +166,17 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
             closeModal();
         }
     });
+
+    //Функцинал, чтобы модальное окно появлялось через какоето время, или при скроле страницы в конец
+    const modalTimerId = setTimeout(openModal, 5000);
+
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
 
 });
