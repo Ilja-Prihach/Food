@@ -128,14 +128,16 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
     //на неcколько триггеров подвязать обработчики событий 
 
     modalTrigger.addEventListener('click', () => {
-        modal.classList.add('show');
-        modal.classList.remove('hide');
+        // modal.classList.add('show');
+        // modal.classList.remove('hide');
+        modal.classList.toggle('show');
         document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыто
     });
 
     modalCloseBtn.addEventListener('click', () => {
-        modal.classList.add('hide');
-        modal.classList.remove('show');
+        // modal.classList.add('hide');
+        // modal.classList.remove('show');
+        modal.classList.toggle('show');
         document.body.style.overflow = '';
     });
 
