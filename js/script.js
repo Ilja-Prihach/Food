@@ -57,11 +57,21 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
     const deadline = '2023-01-21'; // конечная дата таймера
 
     function getTimeRemaining(endtime) { // функ опред разницу между дедлайном и текущ времени
-        const t = Date.parse(endtime) - Date.parse(new Date()), // получим кол-во миллесек до которого нам нужно считать
-              days = Math.floor(t / (1000 * 60 * 60 *24)),      // кол-во дней до дедлайна
-              hours = Math.floor((t /( 1000* 60 * 60)) % 24),  // кол-во часов
-              minutes = Math.floor((t / 1000 / 60) % 60),  
-              seconds = Math.floor((t / 1000) % 60);
+        let days, hours, minutes, seconds;
+        const t = Date.parse(endtime) - Date.parse(new Date()); // получим кол-во миллесек до которого нам нужно считать
+
+        if (t <=0) {
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+        } else {
+            days = Math.floor(t / (1000 * 60 * 60 *24)),      // кол-во дней до дедлайна
+            hours = Math.floor((t /( 1000* 60 * 60)) % 24),  // кол-во часов
+            minutes = Math.floor((t / 1000 / 60) % 60),  
+            seconds = Math.floor((t / 1000) % 60);
+        }
+
         return {  //переенные только внутри функции, возвращаем их наружу с помощью ретерн
             'total': t,
             'days': days,
@@ -105,4 +115,28 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
         }     
     }
     setClock('.timer', deadline );
+
+
+    //Модальное окно
+    //Создаю переменные
+    const modalTrigger = document.querySelector('[data-modal]'),
+          modal = document.querySelector('.modal'),
+          modalCloseBtn = document.querySelector('[data-close]');
+    
+    //Алгаритм работы скрипта:
+    //Создаю две функции на открытие и закрытие модального окна  
+    //на неcколько триггеров подвязать обработчики событий 
+
+    modalTrigger.addEventListener('click', () => {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden'; //чтобы страница не скролилась когда модал открыто
+    });
+
+    modalCloseBtn.addEventListener('click', () => {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    });
+
 });
