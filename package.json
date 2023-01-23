@@ -1,6 +1,10 @@
 {
   "name": "food_dist",
   "version": "1.0.0",
+<<<<<<< HEAD
+=======
+  "description": "",
+>>>>>>> b31c6177bca1b92c60a2652de1ad2b6ba3fe673a
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +18,11 @@
   "bugs": {
     "url": "https://github.com/Ilja-Prihach/Food/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/Ilja-Prihach/Food#readme",
   "devDependencies": {},
   "description": ""
+=======
+  "homepage": "https://github.com/Ilja-Prihach/Food#readme"
+>>>>>>> b31c6177bca1b92c60a2652de1ad2b6ba3fe673a
 }

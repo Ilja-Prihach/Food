@@ -290,7 +290,19 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
 
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
+<<<<<<< HEAD
             postData('http://localhost:3000/requests', json)
+=======
+
+            fetch('js/server.php', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(object)
+            })
+            .then(data => data.text())
+>>>>>>> b31c6177bca1b92c60a2652de1ad2b6ba3fe673a
             .then(data => {
                 console.log(data);
                 showThanksModal(message.success);
