@@ -259,13 +259,25 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
     };
  
     forms.forEach(item => {
-        postData(item);
+        bindPostData(item);
     });
+
+    const postData = async (url, data) => {
+        let res = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        });
+    
+        return await res.json();
+    };
  
-    function postData(form) {
+    function bindPostData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
- 
+
             let statusMessage = document.createElement('img');
             statusMessage.src = message.loading;
             statusMessage.style.cssText = `
@@ -273,35 +285,24 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
                 margin: 0 auto;
             `;
             form.insertAdjacentElement('afterend', statusMessage);
-
+        
             const formData = new FormData(form);
 
-            const object = {};
-            formData.forEach(function(value, key){
-                object[key] = value;
-            });
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-
-            fetch('server.php', {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(object)
-            })
-            .then(data => data.text())
+            postData('http://localhost:3000/requests', json)
             .then(data => {
                 console.log(data);
                 showThanksModal(message.success);
-                form.reset();
                 statusMessage.remove();
             }).catch(() => {
-                showThanksModal (message.failure);
+                showThanksModal(message.failure);
             }).finally(() => {
                 form.reset();
             });
         });
     }
+
 
     //красивое оповещение пользователя
     function showThanksModal(message) {
@@ -327,6 +328,10 @@ window.addEventListener('DOMContentLoaded', () => {     //назначаем г�
             closeModal();
         }, 4000);
     }
+
+    fetch('http://localhost:3000/menu')
+        .then(data => data.json())
+        .then(res => console.log(res));
 
 
     // Fetch API
